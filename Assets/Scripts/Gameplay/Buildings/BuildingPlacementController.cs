@@ -22,8 +22,11 @@ public class BuildingPlacementController : MonoBehaviour
 
 
     [SerializeField]
-
     private GameObject currentPlaceableObject;
+
+    [SerializeField]
+    private VoidEvent OnBuild;
+
     private float mouseWheelRotation;
 
     Terrain terr; // terrain to modify
@@ -37,7 +40,6 @@ public class BuildingPlacementController : MonoBehaviour
     public int size = 0; // the diameter of terrain portion that will raise under the game object
     public float desiredHeight = 0; // the height we want that portion of terrain to be
 
-    List<float> MedianList = new List<float>(); // list of each hight value to find the median value
     List<TreeInstance> TreeInstances = new List<TreeInstance>(); // list to hold a reffrence of all trees
 
     public bool toggle = false;
@@ -62,10 +64,10 @@ public class BuildingPlacementController : MonoBehaviour
         HandleCancelObject();
         if (currentPlaceableObject != null)
         {
-            // if (currentPlaceableObject.transform.localRotation.x != 0 || currentPlaceableObject.transform.localRotation.z != 0)
-            //  {
-            //    currentPlaceableObject.GetComponentInChildren<Renderer>().sharedMaterial = isNotPlaceable;
-            //   }
+             if (currentPlaceableObject.transform.localRotation.x != 0 || currentPlaceableObject.transform.localRotation.z != 0)
+              {
+                currentPlaceableObject.GetComponentInChildren<Renderer>().sharedMaterial = isNotPlaceable;
+              }
             size = (int)placeableObjectPrefab.GetComponent<BoxCollider>().size.x; //Sets the diamiter of the offset from placement point
             MoveCurrentPlaceableObjectToMouse();
             RotateFromMouseWheel();
@@ -102,17 +104,14 @@ public class BuildingPlacementController : MonoBehaviour
         else if (currentPlaceableObject.GetComponentInChildren<Renderer>().sharedMaterial == isNotPlaceable)
         {
             print("This object cannot be placed here");
-
         }
-
-
     }
 
     private void RotateFromMouseWheel()
     {
 
-        mouseWheelRotation += Input.mouseScrollDelta.y;
-        currentPlaceableObject.transform.Rotate(UnityEngine.Vector3.up, mouseWheelRotation * 90f);
+        //mouseWheelRotation += Input.mouseScrollDelta.y;
+       // currentPlaceableObject.transform.Rotate(UnityEngine.Vector3.up, mouseWheelRotation * 90f);
     }
     private void MoveCurrentPlaceableObjectToMouse()
     {
@@ -141,9 +140,6 @@ public class BuildingPlacementController : MonoBehaviour
             {
                 currentPlaceableObject = Instantiate(placeableObjectPrefab);
                 currentPlaceableObject.GetComponentInChildren<Renderer>().sharedMaterial = isPlaceable;
-
-
-
             }
             else
             {
@@ -170,11 +166,8 @@ public class BuildingPlacementController : MonoBehaviour
             {
                 Destroy(currentPlaceableObject);
                 CloseBranch();
-
             }
         }
-
-
     }
 
     private void CloseBranch()
@@ -214,17 +207,21 @@ public class BuildingPlacementController : MonoBehaviour
             // The the actual world position of the current tree checking
             UnityEngine.Vector3 currentTreeWorldPosition = UnityEngine.Vector3.Scale(currentTree.position, terr.terrainData.size) + Terrain.activeTerrain.transform.position;
 
+            //Checks world possiton against possiton of each tree in list to find ones to be removed
             if (currentTreeWorldPosition.x < currentPlaceableObject.transform.position.x + offset && currentTreeWorldPosition.x > currentPlaceableObject.transform.position.x - offset && currentTreeWorldPosition.z > currentPlaceableObject.transform.position.z - offset && currentTreeWorldPosition.z < currentPlaceableObject.transform.position.z + offset)
             {
                 RemoveTrees.Add(currentTree);
             }
         }
 
+        //Deletes trees
         foreach(TreeInstance x in RemoveTrees)
         {
-            Debug.Log(x.ToString());
+            //Debug.Log(x.ToString());
             TreeInstances.Remove(x);
         }
+
+        //Updates list of trees
         terr.terrainData.treeInstances = TreeInstances.ToArray();
         RemoveTrees.Clear();
      
@@ -232,22 +229,13 @@ public class BuildingPlacementController : MonoBehaviour
         float[,] heights = terr.terrainData.GetHeights(posXInTerrain - offset, posYInTerrain - offset, size, size);
 
 
-        heights = TheLine(heights);
+        heights = PlaneOfBestFit(heights);
 
-                // set each sample of the terrain in the size to the desired height
-      //  var heightScale = 1.0f / terr.terrainData.size.y;
-      //  desiredHeight = median(heights) * terr.terrainData.size.y;
-      //  for (int i = 0; i < size; i++)
-      //     for (int j = 0; j < size; j++)
-       //         heights[i, j] = desiredHeight * heightScale;
-
-        // set the new height
         terr.terrainData.SetHeights(posXInTerrain - offset, posYInTerrain - offset, heights);
-        MedianList.Clear();
-
+        OnBuild.Raise();
     }
 
-    float[,] TheLine(float[,] calc)
+    float[,] PlaneOfBestFit(float[,] calc)
     {
         float[,] ToMod = calc;
 
@@ -267,7 +255,7 @@ public class BuildingPlacementController : MonoBehaviour
             }
         }
 
-            double[,] b = Matrix.Transpose(temp_B);
+           // double[,] b = Matrix.Transpose(temp_B);
             double[,] A = temp_A;
             double[,] Transpose = Matrix.Dot(Matrix.Transpose(A), A);
             double[,] Psudo = Matrix.PseudoInverse(Transpose);
@@ -284,29 +272,6 @@ public class BuildingPlacementController : MonoBehaviour
 
         return ToMod;
 
-    }
-
-    float median(float[,] calc)
-    {
-        float found = 0;
-
-        foreach (float x in calc)
-        {
-            MedianList.Add(x);
-        }
-
-        MedianList.Sort();
-
-        if (MedianList.Count % 2 == 0)
-        {
-            found = MedianList[(MedianList.Count / 2)];
-        }
-        else
-        {
-            found = MedianList[((MedianList.Count - 1) / 2)];
-        }
-
-        return found;
     }
 }
 

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 7bdfb4065865ee44aa47c4fc4da27401
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - placeableObjectPrefab: {instanceID: 0}
+  - isPlaceable: {instanceID: 0}
+  - isNotPlaceable: {instanceID: 0}
+  - materialWhenPlaced: {instanceID: 0}
+  - uiBranch: {instanceID: 0}
+  - currentPlaceableObject: {instanceID: 0}
+  - OnBuild: {fileID: 11400000, guid: bf4592cfce16fab489a3ffb561b956bd, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
