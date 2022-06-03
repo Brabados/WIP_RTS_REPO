@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>Accord</id>
+    <version>3.8.2-alpha</version>
+    <title>Accord (core library)</title>
+    <authors>Accord.NET</authors>
+    <owners>Accord.NET</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>http://accord-framework.net/license.txt</licenseUrl>
+    <projectUrl>http://accord-framework.net/</projectUrl>
+    <iconUrl>http://accord-framework.net/logo.png</iconUrl>
+    <description>The core of the Accord.NET Framework. Contains basic classes such as general exceptions and extensions used by other framework libraries.</description>
+    <summary>Accord.NET Framework core library.</summary>
+    <tags>accord.net aforge.net framework structures machine learning .net c# unity3d unity</tags>
+  </metadata>
+</package>
