@@ -36,6 +36,7 @@ public class SmartObjectManager : MonoBehaviour
         if(!RegisteredObjects.Contains(toRegister))
         {
             RegisteredObjects.Add(toRegister);
+            Debug.Log(toRegister.Name);
         }
     }
 

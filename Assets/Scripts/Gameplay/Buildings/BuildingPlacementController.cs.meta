@@ -10,6 +10,7 @@ MonoImporter:
   - materialWhenPlaced: {instanceID: 0}
   - uiBranch: {instanceID: 0}
   - currentPlaceableObject: {instanceID: 0}
+  - OnChangeTerrain: {fileID: 11400000, guid: 11f7b46107710d643ac4038c42b373ef, type: 2}
   - OnBuild: {fileID: 11400000, guid: bf4592cfce16fab489a3ffb561b956bd, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}

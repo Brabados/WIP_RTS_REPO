@@ -22,6 +22,9 @@ public class BuildingPlacementController : MonoBehaviour
     [SerializeField]
     private GameObjectEvent OnChangeTerrain;
 
+    [SerializeField]
+    private VoidEvent OnBuild;
+
     private float mouseWheelRotation;
 
     public bool toggle = false;
@@ -65,6 +68,7 @@ public class BuildingPlacementController : MonoBehaviour
             {
                 OnChangeTerrain.Raise(currentPlaceableObject);// runs the function for modifying terrain
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                OnBuild.Raise();
 
                 RaycastHit hitInfo;
                 if (Physics.Raycast(ray, out hitInfo))

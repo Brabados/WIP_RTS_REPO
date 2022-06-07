@@ -27,6 +27,11 @@ public class SmartObject : MonoBehaviour
 
     public void Start()
     {
+
+    }
+
+    public void OnPlacement()
+    {
         SmartObjectManager.Instance.Register(this);
     }
 

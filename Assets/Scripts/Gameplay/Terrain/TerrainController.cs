@@ -16,9 +16,6 @@ public class TerrainController : MonoBehaviour
 
     List<TreeInstance> TreeInstances = new List<TreeInstance>(); // list to hold a reffrence of all trees
 
-    [SerializeField]
-    private VoidEvent OnChangeTerrain;
-
     public void Start()
     {
         terr = Terrain.activeTerrain;
@@ -54,7 +51,7 @@ public class TerrainController : MonoBehaviour
         heights = PlaneOfBestFit(heights);
 
         terr.terrainData.SetHeights(posXInTerrain - offset, posYInTerrain - offset, heights);
-        OnChangeTerrain.Raise();
+ 
        
     }
 
