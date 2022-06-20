@@ -36,7 +36,6 @@ public class SmartObjectManager : MonoBehaviour
         if(!RegisteredObjects.Contains(toRegister))
         {
             RegisteredObjects.Add(toRegister);
-            Debug.Log(toRegister.Name);
         }
     }
 
@@ -46,5 +45,12 @@ public class SmartObjectManager : MonoBehaviour
         {
             RegisteredObjects.Remove(toDeregister);
         }
+    }
+
+    public void GiveTask(GameObject ToGive)
+    {
+        TestNavMeshAI AI = ToGive.GetComponent<TestNavMeshAI>();
+
+
     }
 }

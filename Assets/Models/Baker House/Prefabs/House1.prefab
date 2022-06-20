@@ -115,6 +115,7 @@ MonoBehaviour:
   _InteractionType: 0
   _Duration: 0
   MaxUsers: 2
+  Completetion: {fileID: 11400000, guid: faabaf307eaf1164f8a0b055c23d24a0, type: 2}
 --- !u!114 &3359483189789488786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +132,7 @@ MonoBehaviour:
   _InteractionType: 1
   _Duration: 3
   MaxUsers: 1
+  Completetion: {fileID: 11400000, guid: faabaf307eaf1164f8a0b055c23d24a0, type: 2}
 --- !u!114 &8076049541042982309
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,6 +8,9 @@ public class TestInteraction : BaseInteraction
     [SerializeField]
     protected int MaxUsers = 1;
 
+    [SerializeField]
+    protected GameObjectEvent Completetion;
+
     protected int CurretUsers = 0;
 
     public override bool isAvalible()
@@ -18,7 +21,8 @@ public class TestInteraction : BaseInteraction
     public override void Lock()
     {
         CurretUsers++;
-        if(CurretUsers > MaxUsers)
+        //Error Catching for debug
+        if (CurretUsers > MaxUsers)
         {
             Debug.LogError("Too many users have locked " + Name);
         }
@@ -26,16 +30,28 @@ public class TestInteraction : BaseInteraction
 
     public override void Perform(MonoBehaviour Performer)
     {
+        //Error Catching for debug
         if (CurretUsers <= 0)
         {
             Debug.LogError("Trying to perform with no users " + Name);
+        }
+
+
+        if(InteractionType == EInteractionType.Instantanious)
+        {
+            Completetion.Raise(this.gameObject);
+        }
+        else if(InteractionType == EInteractionType.OverTime)
+        {
+
         }
 
     }
 
     public override void Unlock()
     {
-       if (CurretUsers <= 0)
+        //Error Catching for debug
+        if (CurretUsers <= 0)
         {
             Debug.LogError("Attempted to unlock already unlocked Interaction " + Name);
         }

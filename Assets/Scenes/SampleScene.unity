@@ -136,9 +136,7 @@ GameObject:
   - component: {fileID: 77232655}
   - component: {fileID: 77232660}
   - component: {fileID: 77232661}
-  - component: {fileID: 77232659}
   - component: {fileID: 77232658}
-  - component: {fileID: 77232662}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -232,20 +230,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &77232659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 77232654}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 996ee3460aff53b43a20c2fb7ab35172, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  surfaces:
-  - {fileID: 77232660}
 --- !u!114 &77232660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,35 +271,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696a52f7558ceb94eb121ac624f7a8ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnChangeTerrain: {fileID: 11400000, guid: bf4592cfce16fab489a3ffb561b956bd, type: 2}
---- !u!114 &77232662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 77232654}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0de927c79f20b304f9d8acc3603e18a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 0}
-  unityEventResponce:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 77232659}
-        m_TargetAssemblyTypeName: RuntimeBake, Assembly-CSharp
-        m_MethodName: Bake
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
@@ -679,6 +634,7 @@ MonoBehaviour:
   uiBranch: {fileID: 206693449}
   currentPlaceableObject: {fileID: 0}
   OnChangeTerrain: {fileID: 11400000, guid: 11f7b46107710d643ac4038c42b373ef, type: 2}
+  OnBuild: {fileID: 11400000, guid: bf4592cfce16fab489a3ffb561b956bd, type: 2}
   toggle: 0
 --- !u!1 &534669902
 GameObject:
@@ -774,6 +730,7 @@ GameObject:
   - component: {fileID: 550986101}
   - component: {fileID: 550986100}
   - component: {fileID: 550986099}
+  - component: {fileID: 550986102}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -829,6 +786,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &550986102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550986098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d60e4cae213c04dbd10dd4df717cd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &557328414
 GameObject:
   m_ObjectHideFlags: 0
