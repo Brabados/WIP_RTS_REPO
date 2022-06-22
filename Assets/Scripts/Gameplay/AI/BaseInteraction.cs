@@ -42,4 +42,6 @@ public abstract class BaseInteraction : MonoBehaviour
     public abstract void Unlock();
 
     public abstract void Perform(MonoBehaviour Performer);
+
+    public abstract bool CanPerform();
 }

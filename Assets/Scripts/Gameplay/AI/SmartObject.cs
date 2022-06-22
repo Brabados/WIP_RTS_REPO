@@ -5,11 +5,15 @@ using UnityEngine;
 public class SmartObject : MonoBehaviour
 {
 
-    [SerializeField] protected string _Name;
+    [SerializeField] 
+    protected string _Name;
 
     public string Name => _Name;
 
     public int ID;
+
+    [SerializeField]
+    public GameObject Entrance;
 
     protected List<BaseInteraction> CashedInterations = null;
 

@@ -87,4 +87,13 @@ public class TestInteraction : BaseInteraction
             }
         }
     }
+
+    public override bool CanPerform()
+    {
+        if(CurretUsers < MaxUsers)
+        {
+            return true;
+        }
+        return false;
+    }
 }

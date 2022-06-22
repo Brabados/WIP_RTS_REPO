@@ -396,7 +396,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   Destination: {fileID: 577932311}
-  Assigned: {fileID: 0}
   Task: {fileID: 0}
   NeedNewTask: {fileID: 11400000, guid: 1429b49292f581e4d8f623d0c0bb13a8, type: 2}
 --- !u!195 &203432839
@@ -409,7 +408,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1.5
-  m_Speed: 3.5
+  m_Speed: 5.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -737,6 +736,7 @@ GameObject:
   - component: {fileID: 550986102}
   - component: {fileID: 550986103}
   - component: {fileID: 550986104}
+  - component: {fileID: 550986105}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -835,6 +835,34 @@ MonoBehaviour:
       - m_Target: {fileID: 550986102}
         m_TargetAssemblyTypeName: SmartObjectManager, Assembly-CSharp
         m_MethodName: GiveTask
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &550986105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550986098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5c39c41898776f4888a29dd5c3aa605, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: faabaf307eaf1164f8a0b055c23d24a0, type: 2}
+  unityEventResponce:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 550986102}
+        m_TargetAssemblyTypeName: SmartObjectManager, Assembly-CSharp
+        m_MethodName: TaskComplete
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

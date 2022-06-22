@@ -55,4 +55,10 @@ public class SmartObjectManager : MonoBehaviour
         TestNavMeshAI AI = AIManager.Instance.FindID(ToGiveID);
         AI.AssignAction(RegisteredObjects);
     }
+
+    public void TaskComplete(int AIID)
+    {
+        TestNavMeshAI EndTask = AIManager.Instance.FindID(AIID);
+        EndTask.TaskComplete();
+    }
 }

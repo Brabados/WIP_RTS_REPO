@@ -7,7 +7,6 @@ public class TestNavMeshAI : MonoBehaviour
 {
     public int ID;
     [SerializeField] Transform Destination;
-    [SerializeField] SmartObject Assigned;
     [SerializeField] BaseInteraction Task;
     [SerializeField] IntEvent NeedNewTask;
     private NavMeshAgent navMeshAgent;
@@ -20,10 +19,25 @@ public class TestNavMeshAI : MonoBehaviour
 
     private void Update()
     {
-        if (Assigned == null)
+
+        if (Task == null)
         {
             PickAction();
         }
+        else
+        {
+            if (!navMeshAgent.pathPending)
+            {
+                if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+                {
+                    if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f)
+                    {
+                        Task.Perform(this);
+                    }
+                }
+            }
+        }
+
 
     }
 
@@ -37,13 +51,23 @@ public class TestNavMeshAI : MonoBehaviour
         if (toAssign.Count > 0)
         {
             SmartObject RanSO = toAssign[Random.Range(0, toAssign.Count - 1)];
-            Assigned = RanSO;
 
             BaseInteraction RanBI = RanSO.Interactions[Random.Range(0, RanSO.Interactions.Count - 1)];
             Task = RanBI;
 
-            Destination = RanSO.gameObject.transform;
-            navMeshAgent.SetDestination(Destination.position);
+            if (RanBI.CanPerform())
+            {
+                Task = RanBI;
+                RanBI.Lock();
+                Destination = RanSO.Entrance.transform;
+                navMeshAgent.SetDestination(Destination.position);
+            }
         }
+    }
+
+    public void TaskComplete()
+    {
+        Task.Unlock();
+        Task = null;
     }
 }
