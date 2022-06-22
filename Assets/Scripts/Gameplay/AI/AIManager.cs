@@ -40,6 +40,7 @@ public class AIManager : MonoBehaviour
         }
         toRegister.ID = TotalAI;
         TotalAI++;
+        Debug.Log(RegisteredAI.Count);
     }
 
     public void Deregister(TestNavMeshAI toDeregister)

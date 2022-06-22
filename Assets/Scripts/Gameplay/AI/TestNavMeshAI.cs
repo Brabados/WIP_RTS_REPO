@@ -8,10 +8,9 @@ public class TestNavMeshAI : MonoBehaviour
     public int ID;
     [SerializeField] Transform Destination;
     [SerializeField] BaseInteraction Task;
-    [SerializeField] IntEvent NeedNewTask;
     private NavMeshAgent navMeshAgent;
 
-    private void Awake()
+    private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         AIManager.Instance.Register(this);
@@ -22,52 +21,48 @@ public class TestNavMeshAI : MonoBehaviour
 
         if (Task == null)
         {
-            PickAction();
+            AssignAction(SmartObjectManager.Instance.RegisteredObjects);
         }
         else
         {
-            if (!navMeshAgent.pathPending)
+            float distance;
+            distance = Vector3.Distance(this.gameObject.transform.position, Destination.position);
+            if (distance < 2)
             {
-                if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
-                {
-                    if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f)
-                    {
-                        Task.Perform(this);
-                    }
-                }
+                Task.Perform(this, OnTaskFinish);
             }
+                   
         }
 
 
     }
 
-    public void PickAction()
-    {
-        NeedNewTask.Raise(ID);
-    }
-
-    public void AssignAction(List<SmartObject> toAssign)
-    {
-        if (toAssign.Count > 0)
-        {
-            SmartObject RanSO = toAssign[Random.Range(0, toAssign.Count - 1)];
-
-            BaseInteraction RanBI = RanSO.Interactions[Random.Range(0, RanSO.Interactions.Count - 1)];
-            Task = RanBI;
-
-            if (RanBI.CanPerform())
-            {
-                Task = RanBI;
-                RanBI.Lock();
-                Destination = RanSO.Entrance.transform;
-                navMeshAgent.SetDestination(Destination.position);
-            }
-        }
-    }
-
-    public void TaskComplete()
+    public void OnTaskFinish(BaseInteraction Interation)
     {
         Task.Unlock();
         Task = null;
+    }
+
+
+    public void AssignAction(List<SmartObject> toAssign)
+    {
+        if (Task == null)
+        {
+            if (toAssign.Count > 0)
+            {
+                SmartObject RanSO = toAssign[Random.Range(0, toAssign.Count)];
+
+                BaseInteraction RanBI = RanSO.Interactions[Random.Range(0, RanSO.Interactions.Count)];
+                Task = RanBI;
+
+                if (RanBI.isAvalible())
+                {
+                    Task = RanBI;
+                    RanBI.Lock();
+                    Destination = RanSO.Entrance.transform;
+                    navMeshAgent.SetDestination(Destination.position);
+                }
+            }
+        }
     }
 }

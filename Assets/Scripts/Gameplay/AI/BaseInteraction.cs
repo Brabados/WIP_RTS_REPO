@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public enum EInteractionType
 {
     Instantanious = 0,
@@ -16,8 +16,7 @@ public abstract class BaseInteraction : MonoBehaviour
     protected EInteractionType _InteractionType = EInteractionType.Instantanious;
     [SerializeField]
     protected float _Duration = 0f;
-    [SerializeField]
-    public IntEvent Completetion;
+
 
     public string Name => _Name;
     public EInteractionType InteractionType => _InteractionType;
@@ -41,7 +40,6 @@ public abstract class BaseInteraction : MonoBehaviour
 
     public abstract void Unlock();
 
-    public abstract void Perform(MonoBehaviour Performer);
+    public abstract void Perform(MonoBehaviour Performer, UnityAction<BaseInteraction> onCompleted);
 
-    public abstract bool CanPerform();
 }

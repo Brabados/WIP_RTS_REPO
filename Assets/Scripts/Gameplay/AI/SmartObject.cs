@@ -27,10 +27,7 @@ public class SmartObject : MonoBehaviour
             {
                 CashedInterations = new List<BaseInteraction>(GetComponents<BaseInteraction>());
             }
-            foreach(BaseInteraction x in CashedInterations)
-            {
-                x.Completetion = _Completetion;
-            }
+
             return CashedInterations;
         }
     }

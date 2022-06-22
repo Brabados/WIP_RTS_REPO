@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TestInteraction : BaseInteraction
 {
@@ -9,6 +10,7 @@ public class TestInteraction : BaseInteraction
     {
         public int ID;
         public float ElapsedTime;
+        public UnityAction<BaseInteraction> onCompletion;
     }
 
     [SerializeField]
@@ -35,7 +37,7 @@ public class TestInteraction : BaseInteraction
         }
     }
 
-    public override void Perform(MonoBehaviour Performer)
+    public override void Perform(MonoBehaviour Performer, UnityAction<BaseInteraction> onCompleted)
     {
         //Error Catching for debug
         if (CurretUsers <= 0)
@@ -46,14 +48,26 @@ public class TestInteraction : BaseInteraction
 
         if(InteractionType == EInteractionType.Instantanious)
         {
-            Completetion.Raise(Performer.gameObject.GetComponent<TestNavMeshAI>().ID);
+            onCompleted.Invoke(this);
         }
         else if(InteractionType == EInteractionType.OverTime)
         {
-            PerformerInfo toAdd = new PerformerInfo();
-            toAdd.ElapsedTime = 0;
-            toAdd.ID = Performer.gameObject.GetComponent<TestNavMeshAI>().ID;
-            Performers.Add(toAdd);
+            bool check = false;
+            foreach(PerformerInfo x in Performers)
+            {
+                if(Performer.gameObject.GetComponent<TestNavMeshAI>().ID == x.ID)
+                {
+                    check = true;
+                }
+            }
+            if (check == false)
+            {
+                PerformerInfo toAdd = new PerformerInfo();
+                toAdd.ElapsedTime = 0;
+                toAdd.ID = Performer.gameObject.GetComponent<TestNavMeshAI>().ID;
+                toAdd.onCompletion = onCompleted;
+                Performers.Add(toAdd);
+            }
         }
 
     }
@@ -61,10 +75,11 @@ public class TestInteraction : BaseInteraction
     public override void Unlock()
     {
         //Error Catching for debug
-        if (CurretUsers <= 0)
+        if (CurretUsers < 0)
         {
             Debug.LogError("Attempted to unlock already unlocked Interaction " + Name);
         }
+       
         CurretUsers--;
     }
 
@@ -82,18 +97,9 @@ public class TestInteraction : BaseInteraction
             Performers[index].ElapsedTime += Time.deltaTime;
             if(Performers[index].ElapsedTime >= Duration)
             {
-                Completetion.Raise(Performers[index].ID);
+                Performers[index].onCompletion.Invoke(this);
                 Performers.RemoveAt(index);
             }
         }
-    }
-
-    public override bool CanPerform()
-    {
-        if(CurretUsers < MaxUsers)
-        {
-            return true;
-        }
-        return false;
     }
 }
