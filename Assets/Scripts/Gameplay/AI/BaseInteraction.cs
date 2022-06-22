@@ -16,6 +16,8 @@ public abstract class BaseInteraction : MonoBehaviour
     protected EInteractionType _InteractionType = EInteractionType.Instantanious;
     [SerializeField]
     protected float _Duration = 0f;
+    [SerializeField]
+    public IntEvent Completetion;
 
     public string Name => _Name;
     public EInteractionType InteractionType => _InteractionType;

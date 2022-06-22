@@ -13,6 +13,8 @@ public class SmartObject : MonoBehaviour
 
     protected List<BaseInteraction> CashedInterations = null;
 
+    [SerializeField]
+    protected IntEvent _Completetion;
     public List<BaseInteraction> Interactions
     {
         get
@@ -20,6 +22,10 @@ public class SmartObject : MonoBehaviour
             if(CashedInterations == null)
             {
                 CashedInterations = new List<BaseInteraction>(GetComponents<BaseInteraction>());
+            }
+            foreach(BaseInteraction x in CashedInterations)
+            {
+                x.Completetion = _Completetion;
             }
             return CashedInterations;
         }

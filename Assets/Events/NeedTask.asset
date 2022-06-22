@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2876585af22fac64381809f0a9d73fe0, type: 3}
-  m_Name: NeedNewTask
+  m_Script: {fileID: 11500000, guid: 2d3367f35df521444ab1a44285add3b5, type: 3}
+  m_Name: NeedTask
   m_EditorClassIdentifier: 

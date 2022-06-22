@@ -8,6 +8,8 @@ public class SmartObjectManager : MonoBehaviour
 
     public List<SmartObject> RegisteredObjects { get; private set; } = new List<SmartObject>();
 
+    
+
     private void Awake()
     {
         if(Instance != null)
@@ -37,6 +39,7 @@ public class SmartObjectManager : MonoBehaviour
         {
             RegisteredObjects.Add(toRegister);
         }
+        Debug.Log(toRegister.Name);
     }
 
     public void Deregister(SmartObject toDeregister)
@@ -47,10 +50,9 @@ public class SmartObjectManager : MonoBehaviour
         }
     }
 
-    public void GiveTask(GameObject ToGive)
+    public void GiveTask(int ToGiveID)
     {
-        TestNavMeshAI AI = ToGive.GetComponent<TestNavMeshAI>();
-
-
+        TestNavMeshAI AI = AIManager.Instance.FindID(ToGiveID);
+        AI.AssignAction(RegisteredObjects);
     }
 }

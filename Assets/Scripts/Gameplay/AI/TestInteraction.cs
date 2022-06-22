@@ -5,11 +5,18 @@ using UnityEngine;
 public class TestInteraction : BaseInteraction
 {
 
+    protected class PerformerInfo
+    {
+        public int ID;
+        public float ElapsedTime;
+    }
+
     [SerializeField]
     protected int MaxUsers = 1;
 
-    [SerializeField]
-    protected GameObjectEvent Completetion;
+
+
+    protected List<PerformerInfo> Performers = new List<PerformerInfo>();
 
     protected int CurretUsers = 0;
 
@@ -39,11 +46,14 @@ public class TestInteraction : BaseInteraction
 
         if(InteractionType == EInteractionType.Instantanious)
         {
-            Completetion.Raise(this.gameObject);
+            Completetion.Raise(Performer.gameObject.GetComponent<TestNavMeshAI>().ID);
         }
         else if(InteractionType == EInteractionType.OverTime)
         {
-
+            PerformerInfo toAdd = new PerformerInfo();
+            toAdd.ElapsedTime = 0;
+            toAdd.ID = Performer.gameObject.GetComponent<TestNavMeshAI>().ID;
+            Performers.Add(toAdd);
         }
 
     }
@@ -65,8 +75,16 @@ public class TestInteraction : BaseInteraction
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-        
+        for(int index = Performers.Count - 1; index >= 0; index--)
+        {
+            Performers[index].ElapsedTime += Time.deltaTime;
+            if(Performers[index].ElapsedTime >= Duration)
+            {
+                Completetion.Raise(Performers[index].ID);
+                Performers.RemoveAt(index);
+            }
+        }
     }
 }

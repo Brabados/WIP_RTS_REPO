@@ -5,15 +5,17 @@ using UnityEngine.AI;
 
 public class TestNavMeshAI : MonoBehaviour
 {
-
+    public int ID;
     [SerializeField] Transform Destination;
     [SerializeField] SmartObject Assigned;
-    [SerializeField] GameObjectEvent NeedNewTask;
+    [SerializeField] BaseInteraction Task;
+    [SerializeField] IntEvent NeedNewTask;
     private NavMeshAgent navMeshAgent;
 
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        AIManager.Instance.Register(this);
     }
 
     private void Update()
@@ -23,20 +25,25 @@ public class TestNavMeshAI : MonoBehaviour
             PickAction();
         }
 
-        if(navMeshAgent.destination.x == this.transform.position.x && navMeshAgent.destination.z == this.transform.position.z)
-        {
-           
-        }
     }
 
     public void PickAction()
     {
-        NeedNewTask.Raise(this.gameObject);
+        NeedNewTask.Raise(ID);
     }
 
-    public void AssignAction(SmartObject toAssign)
+    public void AssignAction(List<SmartObject> toAssign)
     {
-        Assigned = toAssign;
-        navMeshAgent.destination = Assigned.gameObject.transform.position;
+        if (toAssign.Count > 0)
+        {
+            SmartObject RanSO = toAssign[Random.Range(0, toAssign.Count - 1)];
+            Assigned = RanSO;
+
+            BaseInteraction RanBI = RanSO.Interactions[Random.Range(0, RanSO.Interactions.Count - 1)];
+            Task = RanBI;
+
+            Destination = RanSO.gameObject.transform;
+            navMeshAgent.SetDestination(Destination.position);
+        }
     }
 }
