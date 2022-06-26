@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class TestInteraction : BaseInteraction
+public class SimpleInteraction : BaseInteraction
 {
 
     protected class PerformerInfo
@@ -55,7 +55,7 @@ public class TestInteraction : BaseInteraction
             bool check = false;
             foreach(PerformerInfo x in Performers)
             {
-                if(Performer.gameObject.GetComponent<TestNavMeshAI>().ID == x.ID)
+                if(Performer.gameObject.GetComponent<BaseAI>().ID == x.ID)
                 {
                     check = true;
                 }
@@ -64,7 +64,7 @@ public class TestInteraction : BaseInteraction
             {
                 PerformerInfo toAdd = new PerformerInfo();
                 toAdd.ElapsedTime = 0;
-                toAdd.ID = Performer.gameObject.GetComponent<TestNavMeshAI>().ID;
+                toAdd.ID = Performer.gameObject.GetComponent<BaseAI>().ID;
                 toAdd.onCompletion = onCompleted;
                 Performers.Add(toAdd);
             }
@@ -75,7 +75,7 @@ public class TestInteraction : BaseInteraction
     public override void Unlock()
     {
         //Error Catching for debug
-        if (CurretUsers < 0)
+        if (CurretUsers <= 0)
         {
             Debug.LogError("Attempted to unlock already unlocked Interaction " + Name);
         }

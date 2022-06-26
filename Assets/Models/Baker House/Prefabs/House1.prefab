@@ -13,10 +13,11 @@ GameObject:
   - component: {fileID: 6126931920326711241}
   - component: {fileID: 5398643495713151133}
   - component: {fileID: 3490719053219364866}
-  - component: {fileID: 8080770370299988001}
-  - component: {fileID: 3359483189789488786}
   - component: {fileID: 8076049541042982309}
   - component: {fileID: -4376467048720949453}
+  - component: {fileID: 5185797307432847695}
+  - component: {fileID: -3006526641408718358}
+  - component: {fileID: 4182265825518088309}
   m_Layer: 2
   m_Name: House1
   m_TagString: Untagged
@@ -100,40 +101,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 2, z: 2}
   m_TimeToStationary: 0.5
---- !u!114 &8080770370299988001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6278293358424273327}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9f100595a38ed541b74b206b34b2a75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Name: Sleep
-  _InteractionType: 0
-  _Duration: 0
-  Completetion: {fileID: 11400000, guid: faabaf307eaf1164f8a0b055c23d24a0, type: 2}
-  MaxUsers: 2
---- !u!114 &3359483189789488786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6278293358424273327}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9f100595a38ed541b74b206b34b2a75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Name: ChaosShit
-  _InteractionType: 1
-  _Duration: 3
-  Completetion: {fileID: 11400000, guid: faabaf307eaf1164f8a0b055c23d24a0, type: 2}
-  MaxUsers: 1
 --- !u!114 &8076049541042982309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,7 +116,6 @@ MonoBehaviour:
   _Name: House
   ID: 0
   Entrance: {fileID: 9140757129125778877}
-  _Completetion: {fileID: 11400000, guid: faabaf307eaf1164f8a0b055c23d24a0, type: 2}
 --- !u!114 &-4376467048720949453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,6 +144,55 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5185797307432847695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6278293358424273327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 130a85673aaf596409161c6858965432, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentMoney: 0
+  passiveIncome: 5
+  TimeTillIncome: 5
+  TimeNextIncome: -1
+--- !u!114 &-3006526641408718358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6278293358424273327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3563c6fc127e6488b2fbea790c30f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: Home
+  ID: 0
+  Entrance: {fileID: 9140757129125778877}
+  HomesMoney: {fileID: 5185797307432847695}
+--- !u!114 &4182265825518088309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6278293358424273327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e140ceb87d6765b48bba3c54c3dbf38d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: GetTax
+  _InteractionType: 0
+  _Duration: 0
+  MaxUsers: 1
+  LinkedHouse: {fileID: -3006526641408718358}
 --- !u!1 &7409210348978044900
 GameObject:
   m_ObjectHideFlags: 0

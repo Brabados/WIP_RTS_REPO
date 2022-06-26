@@ -17,8 +17,6 @@ public class SmartObject : MonoBehaviour
 
     protected List<BaseInteraction> CashedInterations = null;
 
-    [SerializeField]
-    protected IntEvent _Completetion;
     public List<BaseInteraction> Interactions
     {
         get

@@ -6,6 +6,7 @@ public class SmartObjectManager : MonoBehaviour
 {
     public static SmartObjectManager Instance { get; private set; } = null;
 
+    [SerializeField]
     public List<SmartObject> RegisteredObjects { get; private set; } = new List<SmartObject>();
 
     
@@ -39,7 +40,7 @@ public class SmartObjectManager : MonoBehaviour
         {
             RegisteredObjects.Add(toRegister);
         }
-        Debug.Log(toRegister.Name);
+        Debug.Log("Registered " + toRegister.Name);
     }
 
     public void Deregister(SmartObject toDeregister)
@@ -56,9 +57,4 @@ public class SmartObjectManager : MonoBehaviour
         AI.AssignAction(RegisteredObjects);
     }
 
-    public void TaskComplete(int AIID)
-    {
-        TestNavMeshAI EndTask = AIManager.Instance.FindID(AIID);
-        EndTask.TaskComplete();
-    }
 }
