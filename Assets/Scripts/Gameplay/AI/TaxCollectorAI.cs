@@ -14,32 +14,45 @@ public class TaxCollectorAI : TestNavMeshAI
 
     public override void AssignAction(List<SmartObject> toAssign)
     {
-        SmartObject RanSO;
-        BaseInteraction RanBI;
-        if (CarriedMoney < 250)
+        List<SmartObject> RanSO = new List<SmartObject>(); ;
+        List<BaseInteraction> RanBI = new List<BaseInteraction>();
+
+        if (Task == null)
         {
-            foreach (SmartObject x in toAssign)
+            if (CarriedMoney < 250)
             {
-                foreach (BaseInteraction y in x.Interactions)
+                foreach (SmartObject x in toAssign)
                 {
-                    if (y is GetTaxes)
+                    foreach (BaseInteraction y in x.Interactions)
                     {
-                        if (Task == null)
+                        if (y is GetTaxes)
                         {
-                            if (y.isAvalible())
-                            {
-                                RanSO = x;
-                                RanBI = y;
-                                Task = RanBI;
-                                Task = RanBI;
-                                RanBI.Lock();
-                                isDoingTask = false;
-                                Destination = RanSO.Entrance.transform;
-                                navMeshAgent.SetDestination(Destination.position);
-                            }
+                            RanSO.Add(x);
+                            RanBI.Add(y);
                         }
                     }
                 }
+            }
+            if (RanBI.Count >= 1)
+            {
+                int HighestIndex = 0;
+                for (int x = RanBI.Count -1; x >= 0; x--)
+                {
+                    if (RanBI[x].isAvalible())
+                    {
+                        if ((RanBI[HighestIndex] as GetTaxes).LinkedHouse.HomesMoney.currentMoney < (RanBI[x] as GetTaxes).LinkedHouse.HomesMoney.currentMoney)
+                        {
+                            HighestIndex = x;
+                        }
+                    }
+                }
+
+                Task = RanBI[HighestIndex];
+                Task = RanBI[HighestIndex];
+                RanBI[HighestIndex].Lock();
+                isDoingTask = false;
+                Destination = RanSO[HighestIndex].Entrance.transform;
+                navMeshAgent.SetDestination(Destination.position);
             }
         }
     }

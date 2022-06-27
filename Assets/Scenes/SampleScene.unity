@@ -568,6 +568,12 @@ MonoBehaviour:
   OnChangeTerrain: {fileID: 11400000, guid: 11f7b46107710d643ac4038c42b373ef, type: 2}
   OnBuild: {fileID: 11400000, guid: bf4592cfce16fab489a3ffb561b956bd, type: 2}
   toggle: 0
+--- !u!1 &532755281 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1052524333826538787, guid: 9c53551cf60742844bad3204731afa30,
+    type: 3}
+  m_PrefabInstance: {fileID: 864539710}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &534669902
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,6 +842,7 @@ RectTransform:
   m_Children:
   - {fileID: 1403727137}
   - {fileID: 206693450}
+  - {fileID: 915133320}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1128,10 +1135,89 @@ PrefabInstance:
         type: 3}
       propertyPath: TaxCollector
       value: 
-      objectReference: {fileID: 4227839137054525395, guid: e92ee5fd841d9a24fb62ae337ee7bfa9,
+      objectReference: {fileID: 5481460878384240725, guid: 1c4d644922f4da14988fbcc8ceed9a52,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c53551cf60742844bad3204731afa30, type: 3}
+--- !u!1 &915133319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 915133320}
+  - component: {fileID: 915133322}
+  - component: {fileID: 915133321}
+  m_Layer: 5
+  m_Name: MoneyTotal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &915133320
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915133319}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 557328418}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 105, y: -54}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &915133321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915133319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 0
+--- !u!222 &915133322
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915133319}
+  m_CullTransparentMesh: 1
 --- !u!1 &1403727136
 GameObject:
   m_ObjectHideFlags: 0
@@ -1264,3 +1350,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1403727136}
   m_CullTransparentMesh: 0
+--- !u!1 &1416859253 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5025865475875006732, guid: 9c53551cf60742844bad3204731afa30,
+    type: 3}
+  m_PrefabInstance: {fileID: 864539710}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1416859257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416859253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25672fa0796dbc34aa07922f4aef25a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name: Castle
+  ID: 0
+  Entrance: {fileID: 532755281}
