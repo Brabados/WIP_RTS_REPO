@@ -9,20 +9,74 @@ public class TerrainController : MonoBehaviour
     int hmWidth; // heightmap width
     int hmHeight; // heightmap height
 
+    public int XrotDegree;
+    public int YrotDegree;
+    public int ZrotDegree;
+
+    private float XrotRadian;
+    private float YrotRadian;
+    private float ZrotRadian;
+
     int posXInTerrain; // position of the game object in terrain width (x axis)
     int posYInTerrain; // position of the game object in terrain height (z axis)
 
     int size = 0; // the diameter of terrain portion that will raise under the game object
 
     List<TreeInstance> TreeInstances = new List<TreeInstance>(); // list to hold a reffrence of all trees
+    public TerrainVisualizer _Visualizer;
 
-    public void Start()
+    public UnityEngine.Vector3 lastHit;
+
+    float[,] Xrotation;
+    float[,] Yrotation;
+    float[,] Zrotation;
+
+public void Start()
     {
         terr = Terrain.activeTerrain;
         hmWidth = terr.terrainData.heightmapResolution;
         hmHeight = terr.terrainData.heightmapResolution;
         TreeInstances = new List<TreeInstance>(Terrain.activeTerrain.terrainData.treeInstances); //Gets the list of trees from the main terraindata and stores it for later use
+        _Visualizer = gameObject.GetComponent<TerrainVisualizer>();
+    }
 
+    public void Update()
+    {
+        XrotRadian = XrotDegree * Mathf.PI / 180;
+        YrotRadian = YrotDegree * Mathf.PI / 180;
+        ZrotRadian = ZrotDegree * Mathf.PI / 180;
+        Xrotation = new float[3, 3] { { 1, 0, 0 }, { 0, Mathf.Cos(XrotRadian), -Mathf.Sin(XrotRadian) }, { 0, Mathf.Sin(XrotRadian), Mathf.Cos(XrotRadian) } };
+        Yrotation = new float[3, 3] { { Mathf.Cos(YrotRadian), 0, Mathf.Sin(YrotRadian) }, { 0, 1, 0 }, { -Mathf.Sin(YrotRadian), 0, Mathf.Cos(YrotRadian) } };
+        Zrotation = new float[3, 3] { { Mathf.Cos(ZrotRadian), -Mathf.Sin(ZrotRadian), 0 }, { Mathf.Sin(ZrotRadian), Mathf.Cos(ZrotRadian), 0 }, { 0, 0, 1 } };
+    }
+
+    //Start of refactoring out code to be used better and more effecently, will recomment when fully refactored
+    public float[,] TerrainPoint(UnityEngine.Vector3 CheckPoint)
+    {
+        if(size < 5)
+        { 
+            size = 10;
+        }
+
+        // get the normalized position of the mouse relative to the terrain
+        UnityEngine.Vector3 tempCoord = (CheckPoint - terr.gameObject.transform.position);
+        UnityEngine.Vector3 coord;
+
+        coord.x = tempCoord.x / terr.terrainData.size.x;
+        coord.y = tempCoord.y / terr.terrainData.size.y;
+        coord.z = tempCoord.z / terr.terrainData.size.z;
+
+        // get the position of the terrain heightmap where the mouse is
+        posXInTerrain = (int)(coord.x * hmWidth);
+        posYInTerrain = (int)(coord.z * hmHeight);
+
+        // set an offset so that all the manipulated terrain is under the mouse
+        int offset = size / 2;
+
+        // get the heights of the terrain under the mouse
+        float[,] heights = terr.terrainData.GetHeights(posXInTerrain - offset, posYInTerrain - offset, size, size);
+
+        return heights;
     }
     public void PlaceBuilding(GameObject currentPlaceableObject)
     {
@@ -33,7 +87,6 @@ public class TerrainController : MonoBehaviour
         coord.x = tempCoord.x / terr.terrainData.size.x;
         coord.y = tempCoord.y / terr.terrainData.size.y;
         coord.z = tempCoord.z / terr.terrainData.size.z;
-
 
         // get the position of the terrain heightmap where this game object is
         posXInTerrain = (int)(coord.x * hmWidth);
@@ -56,6 +109,26 @@ public class TerrainController : MonoBehaviour
     }
 
     float[,] PlaneOfBestFit(float[,] calc)
+    {
+        double[,] fit = SumOfAPlane(calc);
+
+        float[,] ToMod = calc;
+
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                ToMod[i, j] = (float)((i * fit[0, 0]) + (j * fit[1, 0]) + fit[2, 0]);
+            }
+        }
+
+        double angle = angelof(fit);
+
+        return ToMod;
+
+    }
+
+    public double[,] SumOfAPlane(float[,] calc)
     {
         float[,] ToMod = calc;
 
@@ -82,15 +155,26 @@ public class TerrainController : MonoBehaviour
         double[,] PsudoTranspose = Matrix.Dot(Psudo, Matrix.Transpose(A));
         double[,] fit = Matrix.Dot(PsudoTranspose, temp_B);
 
-        for (int i = 0; i < size; i++)
-        {
-            for (int j = 0; j < size; j++)
-            {
-                ToMod[i, j] = (float)((i * fit[0, 0]) + (j * fit[1, 0]) + fit[2, 0]);
-            }
-        }
+        return fit;
+    }
 
-        return ToMod;
+    public float angelof( double[,] Plane)
+    {
+        float thata = 0;
+
+        double[,] UpVector = new double[3,1];
+        UpVector[0, 0] = 1;
+        UpVector[1, 0] = 0;
+        UpVector[2, 0] = 1;
+
+        double magnitudeA = Mathf.Sqrt((float)((Plane[0, 0] * Plane[0, 0]) + (Plane[1, 0] * Plane[1, 0]) + (Plane[2, 0] * Plane[2, 0])));
+        double magnitudeB = Mathf.Sqrt((float)((UpVector[0, 0] * UpVector[0, 0]) + (UpVector[1, 0] * UpVector[1, 0]) + (UpVector[2, 0] * UpVector[2, 0])));
+        double todiv = Plane[0, 0] * UpVector[0, 0] + Plane[1, 0] * UpVector[1, 0] + Plane[2, 0] * UpVector[2, 0];
+        thata = Mathf.Acos((float)(todiv / (magnitudeA * magnitudeB)));
+
+
+        return thata;
+
 
     }
 
@@ -121,5 +205,39 @@ public class TerrainController : MonoBehaviour
         //Updates list of trees
         terr.terrainData.treeInstances = TreeInstances.ToArray();
         RemoveTrees.Clear();
+    }
+
+    //beung used to make a visualizer for the terrain manipulation, we probably be used as a neet visual for the hud
+    private void OnMouseOver()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit Hitout;
+        Physics.Raycast(ray, out Hitout);
+        if (lastHit != Hitout.point)
+        {
+            _Visualizer.Clear();
+            float[,] Calc = TerrainPoint(Hitout.point);
+
+            ParticleSystem.EmitParams emmiter = new ParticleSystem.EmitParams();
+            emmiter.velocity = new UnityEngine.Vector3(0, 0, 0);
+            emmiter.startSize = 0.5f;
+
+            //need to refactor so multiple partical systems can show diffrent information
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    float[] point = new float[] { j, Calc[i, j] * 100, i };
+
+                    float[] xrotated = Matrix.Dot(point, Xrotation);
+                    float[] yrotated = Matrix.Dot(xrotated, Yrotation);
+
+                    emmiter.position = new UnityEngine.Vector3(yrotated[0], yrotated[1], yrotated[2]);
+                    _Visualizer.Vis(emmiter);
+                }
+            }
+        }
+        lastHit = Hitout.point;
+        
     }
 }
