@@ -218,26 +218,36 @@ public void Start()
             _Visualizer.Clear();
             float[,] Calc = TerrainPoint(Hitout.point);
 
-            ParticleSystem.EmitParams emmiter = new ParticleSystem.EmitParams();
-            emmiter.velocity = new UnityEngine.Vector3(0, 0, 0);
-            emmiter.startSize = 0.5f;
+            visualize(Calc, Color.white);
 
+            Calc = PlaneOfBestFit(Calc);
+
+            visualize(Calc, Color.yellow);
             //need to refactor so multiple partical systems can show diffrent information
-            for (int i = 0; i < size; i++)
-            {
-                for (int j = 0; j < size; j++)
-                {
-                    float[] point = new float[] { j, Calc[i, j] * 100, i };
 
-                    float[] xrotated = Matrix.Dot(point, Xrotation);
-                    float[] yrotated = Matrix.Dot(xrotated, Yrotation);
-
-                    emmiter.position = new UnityEngine.Vector3(yrotated[0], yrotated[1], yrotated[2]);
-                    _Visualizer.Vis(emmiter);
-                }
-            }
         }
         lastHit = Hitout.point;
         
+    }
+
+    public void visualize(float[,] Calc, Color SetColour)
+    {
+        ParticleSystem.EmitParams emmiter = new ParticleSystem.EmitParams();
+        emmiter.velocity = new UnityEngine.Vector3(0, 0, 0);
+        emmiter.startSize = 0.5f;
+        emmiter.startColor = SetColour;
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                float[] point = new float[] { j, Calc[i, j] * 400, i };
+
+                float[] xrotated = Matrix.Dot(point, Xrotation);
+                float[] yrotated = Matrix.Dot(xrotated, Yrotation);
+
+                emmiter.position = new UnityEngine.Vector3(yrotated[0], yrotated[1], yrotated[2]);
+                _Visualizer.Vis(emmiter);
+            }
+        }
     }
 }
