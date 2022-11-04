@@ -281,6 +281,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696a52f7558ceb94eb121ac624f7a8ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  XrotDegree: 15
+  YrotDegree: 10
+  ZrotDegree: 5
   _Visualizer: {fileID: 0}
   lastHit: {x: 0, y: 0, z: 0}
 --- !u!114 &77232662

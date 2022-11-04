@@ -16,11 +16,16 @@ public class TerrainVisualizer : MonoBehaviour
         MyPartical_Object = Instantiate(ParticalsPrefab, UI.transform, true);
         MyParticalSystem = MyPartical_Object.GetComponent<ParticleSystem>();
         MyPartical_Object.transform.localScale = new UnityEngine.Vector3(10, 10, 10);
+        MyPartical_Object.transform.position = UI.transform.position;
+
+        RectTransform Temp = MyParticalSystem.GetComponent<RectTransform>();
+        Temp.localPosition = new Vector3(250, -120, 0);
+
     }
 
     private void Update()
     {
-        MyPartical_Object.transform.position = UI.transform.position;
+      // MyPartical_Object.transform.position = UI.transform.position;
     }
 
     public void Vis(UnityEngine.ParticleSystem.EmitParams ToEmit)

@@ -9,9 +9,9 @@ public class TerrainController : MonoBehaviour
     int hmWidth; // heightmap width
     int hmHeight; // heightmap height
 
-    public int XrotDegree;
-    public int YrotDegree;
-    public int ZrotDegree;
+    public int XrotDegree = 15;
+    public int YrotDegree = 20;
+    public int ZrotDegree = 15;
 
     private float XrotRadian;
     private float YrotRadian;
@@ -80,32 +80,18 @@ public void Start()
     }
     public void PlaceBuilding(GameObject currentPlaceableObject)
     {
-        size = (int)currentPlaceableObject.GetComponent<BoxCollider>().size.x; //Sets the diamiter of the offset from placement point
-        // get the normalized position of this game object relative to the terrain
-        UnityEngine.Vector3 tempCoord = (currentPlaceableObject.transform.position - terr.gameObject.transform.position);
-        UnityEngine.Vector3 coord;
-        coord.x = tempCoord.x / terr.terrainData.size.x;
-        coord.y = tempCoord.y / terr.terrainData.size.y;
-        coord.z = tempCoord.z / terr.terrainData.size.z;
+        //Sets the diamiter of the offset from placement point
+        size = (int)currentPlaceableObject.GetComponent<BoxCollider>().size.x; 
+                                                                              
 
-        // get the position of the terrain heightmap where this game object is
-        posXInTerrain = (int)(coord.x * hmWidth);
-        posYInTerrain = (int)(coord.z * hmHeight);
-
-        // set an offset so that all the raising terrain is under this game object
+        float[,] heights = TerrainPoint(currentPlaceableObject.transform.position);
         int offset = size / 2;
 
         RemoveTrees(currentPlaceableObject.transform.position, offset);
-
-        // get the heights of the terrain under this game object
-        float[,] heights = terr.terrainData.GetHeights(posXInTerrain - offset, posYInTerrain - offset, size, size);
-
-
-        heights = PlaneOfBestFit(heights);
-
-        terr.terrainData.SetHeights(posXInTerrain - offset, posYInTerrain - offset, heights);
- 
        
+        heights = PlaneOfBestFit(heights);
+        terr.terrainData.SetHeights(posXInTerrain - offset, posYInTerrain - offset, heights);
+        size = 0;
     }
 
     float[,] PlaneOfBestFit(float[,] calc)
@@ -218,29 +204,41 @@ public void Start()
             _Visualizer.Clear();
             float[,] Calc = TerrainPoint(Hitout.point);
 
-            visualize(Calc, Color.white);
+            float MinHeight = float.MaxValue;
+
+            foreach(float x in Calc)
+            {
+                if(x < MinHeight)
+                {
+                    MinHeight = x;
+                }
+            }
+
+            visualize(Calc, Color.white, MinHeight);
 
             Calc = PlaneOfBestFit(Calc);
 
-            visualize(Calc, Color.yellow);
-            //need to refactor so multiple partical systems can show diffrent information
+            visualize(Calc, Color.yellow, MinHeight);
 
         }
         lastHit = Hitout.point;
         
     }
 
-    public void visualize(float[,] Calc, Color SetColour)
+    public void visualize(float[,] Calc, Color SetColour, float Adjustment)
     {
         ParticleSystem.EmitParams emmiter = new ParticleSystem.EmitParams();
         emmiter.velocity = new UnityEngine.Vector3(0, 0, 0);
         emmiter.startSize = 0.5f;
         emmiter.startColor = SetColour;
+        
+        
+
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
             {
-                float[] point = new float[] { j, Calc[i, j] * 400, i };
+                float[] point = new float[] { j, (Calc[i, j] - Adjustment) * 400, i };
 
                 float[] xrotated = Matrix.Dot(point, Xrotation);
                 float[] yrotated = Matrix.Dot(xrotated, Yrotation);
