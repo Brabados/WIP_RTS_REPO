@@ -99,16 +99,21 @@ public void Start()
         double[,] fit = SumOfAPlane(calc);
 
         float[,] ToMod = calc;
+        float MinZ = Mathf.Infinity;
 
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
             {
                 ToMod[i, j] = (float)((i * fit[0, 0]) + (j * fit[1, 0]) + fit[2, 0]);
+                if (ToMod[i, j] < MinZ)
+                {
+                    MinZ = ToMod[i, j];
+                }
             }
         }
 
-        double angle = angelof(fit);
+        double angle = angelof(fit, MinZ);
 
         return ToMod;
 
@@ -144,21 +149,25 @@ public void Start()
         return fit;
     }
 
-    public float angelof( double[,] Plane)
+    public float angelof(double[,] Plane, float MinZ)
     {
         float thata = 0;
 
-        double[,] UpVector = new double[3,1];
+        double[,] UpVector = new double[3, 1];
         UpVector[0, 0] = 1;
-        UpVector[1, 0] = 0;
-        UpVector[2, 0] = 1;
+        UpVector[1, 0] = 1;
+        UpVector[2, 0] = MinZ;
+
 
         double magnitudeA = Mathf.Sqrt((float)((Plane[0, 0] * Plane[0, 0]) + (Plane[1, 0] * Plane[1, 0]) + (Plane[2, 0] * Plane[2, 0])));
         double magnitudeB = Mathf.Sqrt((float)((UpVector[0, 0] * UpVector[0, 0]) + (UpVector[1, 0] * UpVector[1, 0]) + (UpVector[2, 0] * UpVector[2, 0])));
-        double todiv = Plane[0, 0] * UpVector[0, 0] + Plane[1, 0] * UpVector[1, 0] + Plane[2, 0] * UpVector[2, 0];
-        thata = Mathf.Acos((float)(todiv / (magnitudeA * magnitudeB)));
+        double todiv = (Plane[0,0] * UpVector[0,0]) + (Plane[1,0] * UpVector[1,0]) + (Plane[2,0] * UpVector[2,0]);
 
 
+        double result = todiv/(magnitudeA * magnitudeB);
+        thata = Mathf.Acos((float)result);
+
+        Debug.Log(thata * (180/Mathf.PI));
         return thata;
 
 
