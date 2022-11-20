@@ -286,7 +286,7 @@ MonoBehaviour:
   ZrotDegree: 5
   _Visualizer: {fileID: 0}
   lastHit: {x: 0, y: 0, z: 0}
-  OnPositionChange: {fileID: 0}
+  OnPositionChange: {fileID: 11400000, guid: ab1322e2afb25254481eb292874429e4, type: 2}
 --- !u!114 &77232662
 MonoBehaviour:
   m_ObjectHideFlags: 0
