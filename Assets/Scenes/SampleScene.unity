@@ -268,7 +268,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 30d217257e3b6e34fa173efed8aa37bf, type: 2}
 --- !u!114 &77232661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,6 +286,7 @@ MonoBehaviour:
   ZrotDegree: 5
   _Visualizer: {fileID: 0}
   lastHit: {x: 0, y: 0, z: 0}
+  OnPositionChange: {fileID: 0}
 --- !u!114 &77232662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,6 +478,7 @@ GameObject:
   - component: {fileID: 322024158}
   - component: {fileID: 322024157}
   - component: {fileID: 322024160}
+  - component: {fileID: 322024161}
   m_Layer: 5
   m_Name: House1
   m_TagString: Untagged
@@ -619,6 +621,34 @@ MonoBehaviour:
   OnChangeTerrain: {fileID: 11400000, guid: 11f7b46107710d643ac4038c42b373ef, type: 2}
   OnBuild: {fileID: 11400000, guid: bf4592cfce16fab489a3ffb561b956bd, type: 2}
   toggle: 0
+--- !u!114 &322024161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322024155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7fc6f6763f55f140a40e6c1670e34c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: ab1322e2afb25254481eb292874429e4, type: 2}
+  unityEventResponce:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 322024160}
+        m_TargetAssemblyTypeName: BuildingPlacementController, Assembly-CSharp
+        m_MethodName: SetPlaceable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &532755281 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1052524333826538787, guid: 9c53551cf60742844bad3204731afa30,

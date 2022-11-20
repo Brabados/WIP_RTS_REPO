@@ -25,6 +25,7 @@ public class BuildingPlacementController : MonoBehaviour
     [SerializeField]
     private VoidEvent OnBuild;
 
+
     private float mouseWheelRotation;
 
     public bool toggle = false;
@@ -57,7 +58,17 @@ public class BuildingPlacementController : MonoBehaviour
         }
     }
 
-
+    public void SetPlaceable(bool set)
+    {
+        if(!set)
+        {
+            currentPlaceableObject.GetComponentInChildren<Renderer>().sharedMaterial = isNotPlaceable;
+        }
+        else 
+        {
+            currentPlaceableObject.GetComponentInChildren<Renderer>().sharedMaterial = isPlaceable;
+        }
+    }
 
     private void ReleaseIfClicked()
     {

@@ -31,7 +31,10 @@ public class TerrainController : MonoBehaviour
     float[,] Yrotation;
     float[,] Zrotation;
 
-public void Start()
+    [SerializeField]
+    private BoolEvent OnPositionChange;
+
+    public void Start()
     {
         terr = Terrain.activeTerrain;
         hmWidth = terr.terrainData.heightmapResolution;
@@ -115,6 +118,14 @@ public void Start()
 
         double angle = angelof(fit, MinZ);
 
+        if(angle >= 54 && angle <= 56)
+        {
+            OnPositionChange.Raise(true);
+        }
+        else
+        {
+            OnPositionChange.Raise(false);
+        }
         return ToMod;
 
     }
@@ -156,7 +167,7 @@ public void Start()
         double[,] UpVector = new double[3, 1];
         UpVector[0, 0] = 1;
         UpVector[1, 0] = 1;
-        UpVector[2, 0] = MinZ;
+        UpVector[2, 0] = 1;
 
 
         double magnitudeA = Mathf.Sqrt((float)((Plane[0, 0] * Plane[0, 0]) + (Plane[1, 0] * Plane[1, 0]) + (Plane[2, 0] * Plane[2, 0])));
@@ -169,8 +180,6 @@ public void Start()
 
         Debug.Log(thata * (180/Mathf.PI));
         return thata;
-
-
     }
 
     public void RemoveTrees(UnityEngine.Vector3 coords, int offset)
