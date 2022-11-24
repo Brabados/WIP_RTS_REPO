@@ -32,7 +32,11 @@ public class TerrainController : MonoBehaviour
     float[,] Zrotation;
 
     [SerializeField]
-    private BoolEvent OnPositionChange;
+    private BoolEvent OnCanPlace;
+
+    [SerializeField]
+    private BoolEvent OnCantPlace;
+
 
     public void Start()
     {
@@ -118,13 +122,13 @@ public class TerrainController : MonoBehaviour
 
         double angle = angelof(fit, MinZ);
 
-        if(angle >= 54 && angle <= 56)
+        if(angle >= 54f && angle <= 56f)
         {
-            OnPositionChange.Raise(true);
+            OnCanPlace.Raise(true);
         }
         else
         {
-            OnPositionChange.Raise(false);
+            OnCantPlace.Raise(false);
         }
         return ToMod;
 
@@ -179,6 +183,7 @@ public class TerrainController : MonoBehaviour
         thata = Mathf.Acos((float)result);
 
         Debug.Log(thata * (180/Mathf.PI));
+        thata = thata * (180 / Mathf.PI);
         return thata;
     }
 

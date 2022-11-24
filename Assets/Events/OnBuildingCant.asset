@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86f1585eb90fd48459a92882b577d7e0, type: 3}
-  m_Name: OnBuildingMove
+  m_Name: OnBuildingCant
   m_EditorClassIdentifier: 
