@@ -49,12 +49,14 @@ public class TerrainController : MonoBehaviour
 
     public void Update()
     {
+        //Bad practices need to move out to probably the awake or start function
         XrotRadian = XrotDegree * Mathf.PI / 180;
         YrotRadian = YrotDegree * Mathf.PI / 180;
         ZrotRadian = ZrotDegree * Mathf.PI / 180;
         Xrotation = new float[3, 3] { { 1, 0, 0 }, { 0, Mathf.Cos(XrotRadian), -Mathf.Sin(XrotRadian) }, { 0, Mathf.Sin(XrotRadian), Mathf.Cos(XrotRadian) } };
         Yrotation = new float[3, 3] { { Mathf.Cos(YrotRadian), 0, Mathf.Sin(YrotRadian) }, { 0, 1, 0 }, { -Mathf.Sin(YrotRadian), 0, Mathf.Cos(YrotRadian) } };
         Zrotation = new float[3, 3] { { Mathf.Cos(ZrotRadian), -Mathf.Sin(ZrotRadian), 0 }, { Mathf.Sin(ZrotRadian), Mathf.Cos(ZrotRadian), 0 }, { 0, 0, 1 } };
+        
     }
 
     //Start of refactoring out code to be used better and more effecently, will recomment when fully refactored
@@ -91,13 +93,15 @@ public class TerrainController : MonoBehaviour
         size = (int)currentPlaceableObject.GetComponent<BoxCollider>().size.x; 
                                                                               
 
-        float[,] heights = TerrainPoint(currentPlaceableObject.transform.position);
+        //float[,] heights = TerrainPoint(currentPlaceableObject.transform.position);
         int offset = size / 2;
+
+        float[,] heights = RotatedTerrainPoint(currentPlaceableObject.transform.position);
 
         RemoveTrees(currentPlaceableObject.transform.position, offset);
        
         heights = PlaneOfBestFit(heights);
-        terr.terrainData.SetHeights(posXInTerrain - offset, posYInTerrain - offset, heights);
+        SetRotatedTerrain(heights, currentPlaceableObject.transform.position);
         size = 0;
     }
 
@@ -225,8 +229,8 @@ public class TerrainController : MonoBehaviour
         if (lastHit != Hitout.point)
         {
             _Visualizer.Clear();
-            float[,] Calc = TerrainPoint(Hitout.point);
-
+            // float[,] Calc = TerrainPoint(Hitout.point);
+            float[,] Calc = RotatedTerrainPoint(Hitout.point);
             float MinHeight = float.MaxValue;
 
             foreach(float x in Calc)
@@ -237,11 +241,11 @@ public class TerrainController : MonoBehaviour
                 }
             }
 
-            visualize(Calc, Color.white, MinHeight);
+           visualize(Calc, Color.white, MinHeight);
 
-            Calc = PlaneOfBestFit(Calc);
+           Calc = PlaneOfBestFit(Calc);
 
-            visualize(Calc, Color.yellow, MinHeight);
+           visualize(Calc, Color.yellow, MinHeight);
 
         }
         lastHit = Hitout.point;
@@ -261,13 +265,104 @@ public class TerrainController : MonoBehaviour
         {
             for (int j = 0; j < size; j++)
             {
-                float[] point = new float[] { j, (Calc[i, j] - Adjustment) * 400, i };
+                float[] point = new float[] { j, (Calc[i, j] - Adjustment), i };
 
                 float[] xrotated = Matrix.Dot(point, Xrotation);
                 float[] yrotated = Matrix.Dot(xrotated, Yrotation);
 
                 emmiter.position = new UnityEngine.Vector3(yrotated[0], yrotated[1], yrotated[2]);
                 _Visualizer.Vis(emmiter);
+            }
+        }
+    }
+
+    public float[,] RotatedTerrainPoint(UnityEngine.Vector3 CheckPoint)
+    {
+        if (size < 5)
+        {
+            size = 10;
+        }
+
+        // get the normalized position of the mouse relative to the terrain
+        UnityEngine.Vector3 tempCoord = (CheckPoint - terr.gameObject.transform.position);
+        UnityEngine.Vector3 coord;
+
+        coord.x = tempCoord.x / terr.terrainData.size.x;
+        coord.y = tempCoord.y / terr.terrainData.size.y;
+        coord.z = tempCoord.z / terr.terrainData.size.z;
+
+        // get the position of the terrain heightmap where the mouse is
+        posXInTerrain = (int)(coord.x * hmWidth);
+        posYInTerrain = (int)(coord.z * hmHeight);
+
+        // set an offset so that all the manipulated terrain is under the mouse
+        int offset = size / 2;
+
+        float[,] heights = new float[size, size];
+
+        for(int i = -offset; i < offset; i++)
+        {
+            for(int j = -offset; j < offset; j++)
+            {
+                float[,] ToRotate= new float[1, 2] { { posXInTerrain + i, posYInTerrain + j } };
+                float[,] rotationMatrix = new float[2, 2] { { Mathf.Cos(45 * (Mathf.PI / 180)), -Mathf.Sin(45 * (Mathf.PI / 180)) }, { Mathf.Sin(45 * (Mathf.PI / 180)), Mathf.Cos(45 * (Mathf.PI / 180)) } };
+
+                ToRotate[0, 0] = ToRotate[0, 0] - posXInTerrain;
+                ToRotate[0, 1] = ToRotate[0, 1] - posYInTerrain;
+
+                float[,] rot = Matrix.Dot(rotationMatrix, ToRotate);
+
+                rot[0, 0] = Mathf.Ceil(rot[0, 0]) + posXInTerrain;
+                rot[0, 1] = Mathf.Ceil(rot[0, 1]) + posYInTerrain;
+
+                heights[i + offset ,j + offset] = terr.terrainData.GetHeight((int)rot[0,0], (int)rot[0, 1]);
+            }
+        }
+        return heights;
+    }
+
+    public void SetRotatedTerrain(float[,] Points, UnityEngine.Vector3 CheckPoint)
+    {
+        if (size < 5)
+        {
+            size = 10;
+        }
+
+        // get the normalized position of the mouse relative to the terrain
+        UnityEngine.Vector3 tempCoord = (CheckPoint - terr.gameObject.transform.position);
+        UnityEngine.Vector3 coord;
+
+        coord.x = tempCoord.x / terr.terrainData.size.x;
+        coord.y = tempCoord.y / terr.terrainData.size.y;
+        coord.z = tempCoord.z / terr.terrainData.size.z;
+
+        // get the position of the terrain heightmap where the mouse is
+        posXInTerrain = (int)(coord.x * hmWidth);
+        posYInTerrain = (int)(coord.z * hmHeight);
+
+        // set an offset so that all the manipulated terrain is under the mouse
+        int offset = size / 2;
+
+        float[,] heights = new float[size, size];
+
+        for (int i = -offset; i < offset; i++)
+        {
+            for (int j = -offset; j < offset; j++)
+            {
+                float[,] ToRotate = new float[1, 2] { { posXInTerrain + i, posYInTerrain + j } };
+                float[,] rotationMatrix = new float[2, 2] { { Mathf.Cos(45 * (Mathf.PI / 180)), -Mathf.Sin(45 * (Mathf.PI / 180)) }, { Mathf.Sin(45 * (Mathf.PI / 180)), Mathf.Cos(45 * (Mathf.PI / 180)) } };
+
+                ToRotate[0, 0] = ToRotate[0, 0] - posXInTerrain;
+                ToRotate[0, 1] = ToRotate[0, 1] - posYInTerrain;
+
+                float[,] rot = Matrix.Dot(rotationMatrix, ToRotate);
+
+                rot[0, 0] = Mathf.Ceil(rot[0, 0]) + posXInTerrain;
+                rot[0, 1] = Mathf.Ceil(rot[0, 1]) + posYInTerrain;
+
+                float[,] pointer = new float[1, 1] { {Points[i + offset, j + offset] / 400}};
+
+                terr.terrainData.SetHeights((int)rot[0, 0], (int)rot[0, 1], pointer);
             }
         }
     }
