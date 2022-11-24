@@ -60,13 +60,16 @@ public class BuildingPlacementController : MonoBehaviour
 
     public void SetPlaceable(bool set)
     {
-        if(!set)
+        if (currentPlaceableObject != null)
         {
-            currentPlaceableObject.GetComponentInChildren<Renderer>().sharedMaterial = isNotPlaceable;
-        }
-        else 
-        {
-            currentPlaceableObject.GetComponentInChildren<Renderer>().sharedMaterial = isPlaceable;
+            if (!set)
+            {
+                currentPlaceableObject.GetComponentInChildren<Renderer>().sharedMaterial = isNotPlaceable;
+            }
+            else
+            {
+                currentPlaceableObject.GetComponentInChildren<Renderer>().sharedMaterial = isPlaceable;
+            }
         }
     }
 
