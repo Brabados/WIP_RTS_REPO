@@ -87,7 +87,11 @@ public class BuildingPlacementController : MonoBehaviour
                 RaycastHit hitInfo;
                 if (Physics.Raycast(ray, out hitInfo))
                 {
+                    Vector3 LocalRot = currentPlaceableObject.transform.rotation.eulerAngles;
                     currentPlaceableObject.transform.rotation = Quaternion.FromToRotation(UnityEngine.Vector3.up, hitInfo.normal);
+                    Vector3 ChangedRot = currentPlaceableObject.transform.rotation.eulerAngles;
+                    ChangedRot[1] = LocalRot[1];
+                    currentPlaceableObject.transform.rotation = Quaternion.Euler(ChangedRot[0], ChangedRot[1], ChangedRot[2]);
                 }
                 currentPlaceableObject.GetComponentInChildren<Renderer>().sharedMaterial = materialWhenPlaced;
                 currentPlaceableObject.GetComponent<InstantiateMaterials>().placed = true;
@@ -106,8 +110,8 @@ public class BuildingPlacementController : MonoBehaviour
     private void RotateFromMouseWheel()
     {
 
-        //mouseWheelRotation += Input.mouseScrollDelta.y;
-       // currentPlaceableObject.transform.Rotate(UnityEngine.Vector3.up, mouseWheelRotation * 90f);
+        mouseWheelRotation += Input.mouseScrollDelta.y;
+        currentPlaceableObject.transform.Rotate(UnityEngine.Vector3.up, mouseWheelRotation);
     }
     private void MoveCurrentPlaceableObjectToMouse()
     {
