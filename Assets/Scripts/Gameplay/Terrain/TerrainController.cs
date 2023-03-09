@@ -238,13 +238,13 @@ public class TerrainController : MonoBehaviour
 
     public void visualize(float[,] Calc, Color SetColour, float Adjustment)
     {
+        //Sets up unity partical system paramiter list for use in visualizing
         ParticleSystem.EmitParams emmiter = new ParticleSystem.EmitParams();
         emmiter.velocity = new UnityEngine.Vector3(0, 0, 0);
         emmiter.startSize = 0.5f;
         emmiter.startColor = SetColour;
-        
-        
 
+        //cycles though each point sets its canvas position and sends it to the visualizer
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
@@ -262,6 +262,7 @@ public class TerrainController : MonoBehaviour
 
     public float[,] RotatedTerrainPoint(UnityEngine.Vector3 CheckPoint, float rotation)
     {
+        //Sets the size if no building is selected
         if (size < 5)
         {
             size = 10;
@@ -282,23 +283,31 @@ public class TerrainController : MonoBehaviour
         // set an offset so that all the manipulated terrain is under the mouse
         int offset = size / 2;
 
+        //Prepares an array of floats to store each Z value
         float[,] heights = new float[size, size];
 
         for(int i = -offset; i < offset; i++)
         {
             for(int j = -offset; j < offset; j++)
             {
+                //Gets the 0 rotation point that would be collected before rotation
                 float[,] ToRotate= new float[1, 2] { { posXInTerrain + i, posYInTerrain + j } };
+
+                //sets the rotation matrix using the rotation of the building(if no building selected substitues 0)
                 float[,] rotationMatrix = new float[2, 2] { { Mathf.Cos(rotation), -Mathf.Sin(rotation) }, { Mathf.Sin(rotation), Mathf.Cos(rotation) } };
 
+                //sets the point to the origin to make rotation easier
                 ToRotate[0, 0] = ToRotate[0, 0] - posXInTerrain;
                 ToRotate[0, 1] = ToRotate[0, 1] - posYInTerrain;
 
+                //Uses the rotation matirx to rotate the point around the origin
                 float[,] rot = Matrix.Dot(rotationMatrix, ToRotate);
 
+                //Adds back original point to scale back to location and pics the closest point
                 rot[0, 0] = Mathf.Ceil(rot[0, 0]) + posXInTerrain;
                 rot[0, 1] = Mathf.Ceil(rot[0, 1]) + posYInTerrain;
 
+                //gets the height at the rotated point and places it in the array of Z heights
                 heights[i + offset ,j + offset] = terr.terrainData.GetHeights((int)rot[0,0], (int)rot[0, 1],1,1)[0,0];
             }
         }

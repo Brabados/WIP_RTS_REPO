@@ -12,6 +12,9 @@ public class BuildingPlacementController : MonoBehaviour
     private Material isNotPlaceable;
     [SerializeField]
     private Material materialWhenPlaced;
+    [SerializeField]
+    private double RotationScale = 10;
+    private float mousedirection = 0;
 
     public GameObject uiBranch;
 
@@ -50,9 +53,13 @@ public class BuildingPlacementController : MonoBehaviour
               {
                 currentPlaceableObject.GetComponentInChildren<Renderer>().sharedMaterial = isNotPlaceable;
               }
-
+            
             MoveCurrentPlaceableObjectToMouse();
+            
+            if(mousedirection != Input.mouseScrollDelta.y)
             RotateFromMouseWheel();
+            mousedirection = Input.mouseScrollDelta.y;
+
             ReleaseIfClicked();
 
         }
@@ -109,8 +116,7 @@ public class BuildingPlacementController : MonoBehaviour
 
     private void RotateFromMouseWheel()
     {
-
-        mouseWheelRotation += Input.mouseScrollDelta.y;
+        mouseWheelRotation = Input.mouseScrollDelta.y * (float)RotationScale;
         currentPlaceableObject.transform.Rotate(UnityEngine.Vector3.up, mouseWheelRotation);
     }
     private void MoveCurrentPlaceableObjectToMouse()

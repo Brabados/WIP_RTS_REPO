@@ -14,6 +14,12 @@ public class GetTaxes : SimpleInteraction
         base.Perform(Performer, onCompleted);
         Performer.gameObject.GetComponent<TaxCollectorAI>().CarriedMoney += LinkedHouse.HomesMoney.currentMoney;
         LinkedHouse.HomesMoney.currentMoney = 0;
+        if (Performer.gameObject.GetComponent<TaxCollectorAI>().CarriedMoney > 250)
+        {
+            LinkedHouse.HomesMoney.currentMoney = Performer.gameObject.GetComponent<TaxCollectorAI>().CarriedMoney - 250;
+            Performer.gameObject.GetComponent<TaxCollectorAI>().CarriedMoney = 250;
+        }
+        
     }
 
     // Start is called before the first frame update
